@@ -1,4 +1,4 @@
-from google import genai
+import google.genai as genai
 import os
 from dotenv import load_dotenv
 
@@ -11,7 +11,7 @@ api_key = os.getenv("GEMINI_API_KEY")
 client = genai.Client(api_key=api_key)
 
 
-# GENERAL AI FUNCTION
+# 1) GENERAL AI (Job roles, questions)
 def ask_ai(prompt):
     response = client.models.generate_content(
         model="models/gemini-2.0-flash",
@@ -20,7 +20,7 @@ def ask_ai(prompt):
     return response.text
 
 
-# RESUME ANALYZER FUNCTION
+# 2) RESUME ANALYZER
 def analyze_resume(resume_text):
     prompt = f"""
     You are an expert HR + ATS Resume Analyzer.
@@ -29,11 +29,11 @@ def analyze_resume(resume_text):
     1. Summary
     2. Strengths
     3. Weaknesses
-    4. ATS Score (0-100)
+    4. ATS Score (0–100)
     5. Best Job Roles
     6. Missing Skills
-    7. Resume Improvement Tips
-    8. Keywords to add for ATS
+    7. Resume Improvement Suggestions
+    8. ATS Keywords
 
     Resume:
     {resume_text}
@@ -43,15 +43,14 @@ def analyze_resume(resume_text):
         model="models/gemini-2.0-flash",
         contents=prompt
     )
-
     return response.text
 
 
-# SKILL EXTRACTOR
+# 3) SKILL EXTRACTION
 def extract_skills(resume_text):
     prompt = f"""
     Extract ONLY technical skills from this resume.
-    Return the output as a comma-separated list (python, sql, java, flutter).
+    Return comma-separated list (python, sql, java, flutter).
 
     Resume:
     {resume_text}
@@ -61,5 +60,4 @@ def extract_skills(resume_text):
         model="models/gemini-2.0-flash",
         contents=prompt
     )
-
     return response.text
