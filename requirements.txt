@@ -1,6 +1,6 @@
 streamlit
-google-generativeai
+google-genai
+python-dotenv
+pypdf
 requests
 beautifulsoup4
-python-dotenv
-
